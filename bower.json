@@ -1,0 +1,25 @@
+{
+  "name": "FrontGhostInspector",
+  "version": "0.0.1",
+  "authors": [
+    "Mauro Mandracchia <info@ideabile.com>"
+  ],
+  "description": "Inspect Front end resource for entire websites.",
+  "main": "app.js",
+  "keywords": [
+    "inspector",
+    "front~end",
+    "resource",
+    "scramber"
+  ],
+  "license": "MIT",
+  "homepage": "http://www.ideabile.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
