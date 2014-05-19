@@ -4,6 +4,7 @@ var casper = require('casper').create(),
     base = 'http://localhost:1337/',
     ajaxurls = {
         links: base+'pages',
+        scambNext: base+'sites/scrambNext/',
         resource: base+'resource'
     },
     request = {};
@@ -57,6 +58,10 @@ var _utils = {
         }
 
         console.log(txt);
+    },
+
+    finish: function( ajax_urls, request ){
+      __utils__.sendAJAX(ajax_urls.scambNext, 'POST', { site: request.id }, false);
     }
 
 };
@@ -64,7 +69,7 @@ var _utils = {
 // Casperjs data binding
 casper.on('remote.message', function(msg) {
     this.echo('remote message caught: ' + msg);
-})
+});
 casper.on( 'page.error', function (msg, trace) {
     this.echo( 'Error: ' + msg, 'ERROR' );
 });
@@ -79,9 +84,14 @@ casper.start(request.url).then(function(){
 }).then(function(){
 
     this.evaluate(_utils.process_scripts, {ajaxurls: ajaxurls, request: request});
+
+}).then(function(){
+
+    this.evaluate(_utils.finish, {ajaxurls: ajaxurls, request: request});
 });
 
 casper.run(function() {
     this.debugPage();
     this.exit();
 });
+

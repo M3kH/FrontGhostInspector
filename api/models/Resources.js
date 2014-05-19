@@ -7,7 +7,6 @@
 
 module.exports = {
 
-  adapter: 'postgresGhostDB',
   migrate: 'alter',
 
   attributes: {

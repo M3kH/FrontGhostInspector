@@ -72,6 +72,51 @@ module.exports = {
       }
 
       return res.redirect('/Sites/all');
+  },
+
+  scrambNext: function(req, res) {
+      var site = req.param('site');
+
+      if(site){
+
+          // var matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+          // var domain = matches && matches[1];
+
+          Pages.findOne({
+            processed:{
+              '=': 0
+            },
+            site:{
+              '=': site
+            }
+          })
+          .populate('site')
+          .exec(function(err,data){
+
+            console.log(err);
+            console.log(data);
+
+            var ls = process.spawn('casperjs', [ '--web-security=no', __dirname+'/../../worker/Ghost.js', data.site.url+data.path, data.site.id ]);
+
+            ls.stdout.on('data', function (data) {
+                console.log('stdout: ' + data);
+            });
+
+            ls.stderr.on('data', function (data) {
+                console.log('stderr: ' + data);
+            });
+
+            ls.on('close', function (code) {
+                console.log('child process exited with code ' + code);
+            });
+
+          });
+
+
+
+      }
+
+      return res.redirect('/Sites/all');
   }
 
 };

@@ -7,11 +7,12 @@
 
 module.exports = {
 
-  adapter: 'postgresGhostDB',
   migrate: 'alter',
   attributes: {
 
       path : 'STRING',
+
+      processed: 'BOOLEAN',
 
       site :{
         model: 'sites'
