@@ -1,0 +1,275 @@
+/*
+ * Author: Mauro Mandracchia - info@ideabile.com
+ * All Right Reserved - 2014
+ * Please contact the author before the usage of this code.
+ */
+
+@import "../../components/bootstrap/less/bootstrap";
+@import "sidebar.less";
+@icon-font-path: "../../fonts/";
+
+
+/*
+ * Default Bootstrap colors
+ */
+@brand-primary: #16b7f4;
+@brand-success: #9dcb3f;
+
+
+/*
+ * Default Inverted navbar Colors
+ */
+
+// Reset inverted navbar basics
+@navbar-inverse-color:                      @gray-light;
+@navbar-inverse-bg:                         #0D6BD1;
+@navbar-inverse-border:                     darken(@navbar-inverse-bg, 10%);
+
+// Inverted navbar links
+@navbar-inverse-link-color:                 #041A5F;
+@navbar-inverse-link-hover-color:           #fff;
+@navbar-inverse-link-hover-bg:              transparent;
+@navbar-inverse-link-active-color:          @navbar-inverse-link-hover-color;
+@navbar-inverse-link-active-bg:             darken(@navbar-inverse-bg, 10%);
+@navbar-inverse-link-disabled-color:        #444;
+@navbar-inverse-link-disabled-bg:           transparent;
+
+// Inverted navbar brand label
+@navbar-inverse-brand-color:                @navbar-inverse-link-color;
+@navbar-inverse-brand-hover-color:          #fff;
+@navbar-inverse-brand-hover-bg:             transparent;
+
+// Inverted navbar toggle
+@navbar-inverse-toggle-hover-bg:            #333;
+@navbar-inverse-toggle-icon-bar-bg:         #fff;
+@navbar-inverse-toggle-border-color:        #333;
+
+.navbar-inverse .dropdown-menu{
+  background: @navbar-inverse-border;
+}
+.navbar-inverse .dropdown-menu > li > a{
+  color: @navbar-inverse-link-hover-color;
+}
+.navbar-inverse .dropdown-menu > li > a:hover{
+  color: @navbar-inverse-link-hover-color;
+  background: darken(@navbar-inverse-border, 10%);
+}
+.navbar-inverse .dropdown-menu .divider{
+  background-color: darken(@navbar-inverse-border, 10%);
+}
+
+/*
+ * Button overwriting
+ */
+.btn{
+  font-size: 0.9em;
+  border-radius: 2px;
+}
+
+.btn.btn-default{
+  background-color: #f9f9f9;
+  background-image: -moz-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fefefe), to(#f2f2f2));
+  background-image: -webkit-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: -o-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: linear-gradient(to bottom, #fefefe, #f2f2f2);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffefefe', endColorstr='#fff2f2f2', GradientType=0);
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Multiselect box
+ */
+.multiselect.btn {
+border-radius: 3px;
+font-size: 1em;
+}
+
+/*
+ * Selectize widget customization
+ */
+.selectize-dropdown, .selectize-input, .selectize-input input {
+  font-size: 0.9em;
+}
+
+.selectize-input > * {
+  margin-right: 20px;
+}
+
+.selectize-input.full input{
+   width: 0 !important;
+}
+.selectize-control.single .selectize-input {
+  background-color: #f9f9f9;
+  background-image: -moz-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fefefe), to(#f2f2f2));
+  background-image: -webkit-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: -o-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: linear-gradient(to bottom, #fefefe, #f2f2f2);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffefefe', endColorstr='#fff2f2f2', GradientType=0);
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+/*
+ * Red link like cancel customization
+ */
+.red{
+  color: #df8173;
+  font-size: 0.9em;
+}
+.red:hover{
+  color: #c15848;
+}
+
+
+/*
+ * The panel of the filters are allocated
+ */
+.panel{
+  border-radius: 0;
+}
+
+.panel h4{
+  font-size: 14px;
+  line-height: 12px;
+}
+
+.panel-default{
+  background: #f8f8f8;
+  border-color: #c5c5c5;
+}
+
+.panel-head{
+  background: #f8f8f8;
+}
+
+.panel-body hr{
+  margin-left: -16px;
+  margin-right: -16px;
+  border-color: #c5c5c5;
+}
+
+
+/*
+ * Tabs settings
+ */
+.tab-content > .tab-pane {
+  padding: 5px;
+  background: #FFF;
+  border: 1px solid #DDD;
+  border-top: 0px;
+  border-radius: 0 0 5px 5px;
+}
+
+textarea.full-size{
+  width: 100%;
+  min-height: 500px;
+}
+
+/*
+ * This are the filters rows
+ */
+ul.filters{
+  list-style: none;
+  padding: 0;
+}
+
+.grp-controls{
+  margin-bottom: 10px;
+}
+
+.cntrls-collumns{
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+.cntrls-collumns li{
+  display: inline-block;
+  min-width: 180px;
+}
+
+
+/*
+ * The remove icon list need a particular position rule
+ * in small view ports is set has relative otherwise is abosoluted
+ */
+.remove-icon{
+  position: relative;
+  float: right;
+}
+
+@media (min-width: 990px) {
+
+  .remove-icon{
+    top: 0px;
+    right: 0px;
+    margin-right: -30px;
+    position: absolute;
+  }
+
+  .datespace .remove-icon{
+    top: 0px;
+    left: 220px;
+    position: absolute;
+  }
+
+}
+
+.remove-icon span{
+  color: #a7412a;
+}
+
+/*
+ * This are rules for the impagination widget
+ */
+.pag{
+  font-size: 0.9em;
+  line-height: 2em;
+}
+
+.pag input{
+  text-align: center;
+  height: 26px
+}

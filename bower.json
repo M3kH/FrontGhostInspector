@@ -18,8 +18,21 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
+    "assets/components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.11",
+    "jquery": "~2.1.1",
+    "ractive": "~0.4.0",
+    "backbone": "~1.1.2",
+    "ractive-backbone": "~0.1.0",
+    "momentjs": "~2.5.1",
+    "requirejs-ractive": "~0.1.5",
+    "requirejs-plugins": "~1.0.2",
+    "almond": "~0.2.9",
+    "rvc": "~0.1.1",
+    "bootstrap": "~3.1.1"
+  }
 }

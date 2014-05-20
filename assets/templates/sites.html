@@ -1,0 +1,9 @@
+<div class="test">
+    <h2>Site list</h2>
+    <hr/>
+    <ul>
+        {{#sites}}
+            <li>{{name}} <div class="pull-right"><a href="/sites/scramb?id={{id}}" class="">Refresh</a></div></li>
+        {{/sites}}
+    </ul>
+</div>
