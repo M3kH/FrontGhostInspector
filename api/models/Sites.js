@@ -21,6 +21,23 @@ module.exports = {
         required: true,
         unique: true,
         defaultsTo: ""
+      },
+
+      is_processing: function(){
+          var res;
+
+          var _res = Pages.find({site: this.id, processed: false}).exec(function(err, data){
+
+              res = "false";
+              if(data.length > 0) res = "true";
+
+              console.log(res);
+
+              return res;
+          });
+
+          console.log(_res);
+          return _res;
       }
 
   }

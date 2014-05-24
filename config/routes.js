@@ -31,6 +31,16 @@ module.exports.routes = {
     action: 'all'
   },
 
+  '/site/:id':{
+      controller: 'sites',
+      action: 'single'
+  },
+
+  '/get_har/:id':{
+      controller: 'pages',
+      action: 'getHar'
+  }
+
 
   // Custom routes here...
 

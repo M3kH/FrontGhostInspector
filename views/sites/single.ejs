@@ -1,0 +1,100 @@
+    <div>
+        <h3 style="margin-bottom: 20px;"><%= site.name %><small>// <%= site.url %></small> <span class="pull-right" style="font-size: 0.6em;"><a href="/sites/scramb?site=<%= site.id %>" class="btn btn-xs btn-primary" style="font">Re-Scan</a></span></h3>
+    </div>
+
+    <div>
+        <h5>Filters</h5>
+        <input type="text" class="selectize"/>
+    </div>
+
+
+    <div class="row-boxing">
+    <% _.each(pages, function (page, i) { %>
+
+        <% if(page.processed){ %>
+        <div class="item">
+            <div>
+                <img src="/screenshot/<%= page.id %>.png" alt="<%= page.path %>" class="img-thumbnail">
+                <h3><% if(page.path != ""){ %><%= page.path %><% }else{ %> index <% } %></h3>
+                <div class="cntrls">
+                    <div>
+                        <a href="#" data-toggle="modal" data-target="#page-scripts-<%= page.id %>" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></a>
+                        <a href="/screenshot/<%= page.id %>.png" target="_blank" class="btn btn-default"><i class="glyphicon glyphicon-camera"></i></a>
+                        <a href="http://www.softwareishard.com/har/viewer/?inputUrl=http://localhost:1337/get_har/<%= page.id %>&expand=true" target="_blank" class="btn btn-default"><i class="glyphicon glyphicon-dashboard"></i></a>
+                        <a href="<%= page.full_url() %>" target="_blank" class="btn btn-default"><i class="glyphicon glyphicon-link"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Start Modal-->
+        <div class="modal fade" id="page-scripts-<%= page.id %>" tabindex="-1" role="dialog" aria-labelledby="pageLabeling" aria-hidden="true">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal header-->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="pageLabeling"><% if(page.path != ""){ %><%= page.path %><% }else{ %> index <% } %></h4>
+                    </div>
+
+                    <!-- Modal body-->
+                    <div class="modal-body">
+
+                        <!-- Accordion for resources-->
+                        <div class="panel-group" id="accordion">
+                        <!-- Loop into resources -->
+                        <% _.each(page.resource, function (resource) { %>
+                            <% var _url = resource.get_url() %>
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#resource-<%= resource.id %>">
+                                        <% if(_url){ %>
+                                            <%= _url[0] %>
+                                        <% }else{ %>
+                                            Inline
+                                        <% } %>
+                                        </a>
+                                    </h4>
+                                </div>
+
+                                <div id="resource-<%= resource.id %>" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <% if(_url){ %>
+
+                                            <!-- Loop into attributes-->
+                                            <ul class="list-group">
+                                            <% _.each(resource.get_attributes(), function (value, attr) { %>
+                                                <% if(value != false){ %>
+                                                    <li class="list-group-item">
+                                                        <%= value %>
+                                                    </li>
+                                                <% } %>
+                                            <% }) %>
+                                            </ul>
+
+                                        <% }else{ %>
+                                            <%= resource.content %>
+                                        <% } %>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        <% }) %>
+                        </div>
+
+                        <!-- Finish looping  -->
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+        <% } %>
+    <% }) %>
+    </div>

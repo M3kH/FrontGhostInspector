@@ -4,7 +4,7 @@
  * Please contact the author before the usage of this code.
  */
 	var c = {
-		baseUrl: "",
+		baseUrl: "/",
 		urlArgs: "bust=" +  (new Date()).getTime(),
 		paths: {
 

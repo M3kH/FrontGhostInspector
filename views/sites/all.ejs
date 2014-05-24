@@ -1,11 +1,45 @@
-    <h3>Sites Management <span class="pull-right"><button class="btn btn-xs btn-primary" style="font">Add a website</button></span></h3>
+    <h3>Sites Management <span class="pull-right"><button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#addWebsite" style="font-size: 0.9em;">Add a website</button></span></h3>
     <hr/>
-    <ul>
+    <ul class="list-group">
         <% _.each(sites, function (site) { %>
-            <li><a href="http://localhost:1337/sites/scramb?site=<%= site.id %>"><%= site.name %> - <%= site.url %></a></li>
+            <li class="list-group-item">
+                <a href="http://localhost:1337/site/<%= site.id %>" class=""><%= site.name %> - <%= site.url %></a>
+                <span class="pull-right"><a href="http://localhost:1337/sites/scramb?site=<%= site.id %>" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-search"></i></a></span>
+            </li>
         <% }) %>
     </ul>
 
-    <div class="main">
+    <div class="modals">
+
+        <div class="modal fade" id="addWebsite" tabindex="-1" role="dialog" aria-labelledby="addWebsiteLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="addWebsiteLabel">Add new website</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal ref-form-addWebsite" role="form">
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">Title</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="title" placeholder="Title" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label form="url" class="col-sm-2 control-label">Url</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="url" placeholder="http://" value="http://" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default ev-addWebsite-reset" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary ev-addWebsite-save">Add website</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
     </div>

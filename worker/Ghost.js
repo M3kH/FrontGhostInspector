@@ -1,5 +1,5 @@
 
-// Get the current directory
+// Get the current directory - START
 var currentFile = require('system').args[3].split("/"),
     pathL = currentFile.length,
     _dir = [], i;
@@ -10,120 +10,114 @@ for( i = 0; i < pathL; i++){
     }
 }
 _dir = _dir.join("/")+"/";
+// Get the current directory - END
 
 
 // Initialization of the casperjs and create the first configuration
 var casper = require('casper').create({
         clientScripts: [_dir+"../node_modules/jquery/dist/jquery.min.js"]
     }),
+
+    _page = casper,
+
+    // Required resources
+    _utils = require(_dir+'evaluating_utils.js')._utils,
+    helpers = require(_dir+'helpers.js'),
+
+    // This are shortcut for the
     base = 'http://localhost:1337/',
+
     ajaxurls = {
-        links: base+'pages',
+        links: base+'pages/',
         scambNext: base+'sites/scrambNext/',
-        resource: base+'resources'
+        resource: base+'resources/'
     },
+
     request = {};
 
+    // This are the parameters
     request.url = casper.cli.args[0];
     request.id = casper.cli.args[1];
-
-// Utilities functions
-var _utils = {
-
-    process_links: function( ajax_urls, request ){
-        console.log("Process links");
-
-        _jq = $.noConflict(true);
-
-        var links = __utils__.findAll('a');
-        return Array.prototype.forEach.call(links, function(link_elem) {
-
-            // Utils for debug
-
-            // console.log(link_elem);
-            // console.log(link_elem.hostname);
-            // console.log(request.url);
-            // console.log(request.url.indexOf(link_elem.hostname));
-
-            if( request.url.indexOf(link_elem.hostname) > -1 ){
-
-              if( typeof link_elem.getAttribute != "undefined" ){
-
-                  var url = link_elem.getAttribute("href");
-
-                  // @ TODO Implement a jquery ajax approach for debug the result
-//                  _jq.ajax({
-//                      type: 'POST',
-//                      url: ajax_urls.links,
-//                      data: {path: url, site: request.id},
-//                      beforeSend: function(){
-//                        console.log("Send trough JQUERY");
-//                      },
-//                      success: function(msg){
-//                          console.log(msg);
-//                      }
-//                  });
-//                  __utils__.sendAJAX(ajax_urls.links, 'POST', {path: url, site: request.id}, false);
-
-              }
-
-            }
-
-        });
-    },
-
-    process_scripts: function( ajax_urls, request ){
+    request.page = casper.cli.args[2];
 
 
-
-        var script = document.getElementsByTagName('script');
-        var txt = '';
-
-        for( var z in script ){
-            __utils__.sendAJAX(ajax_urls.resource, 'POST', {type: 'js', content: script[z].outerHTML, url: request.url }, false);
-
-            if( typeof script[z].outerHTML != "undefined"){
-                txt += script[z].outerHTML+"\n";
-            }else{
-                txt += script[z]+"\n";
-            }
-        }
-
-//        console.log(txt);
-    },
-
-    finish: function( ajax_urls, request ){
-      __utils__.sendAJAX(ajax_urls.scambNext, 'POST', { site: request.id }, false);
-    }
-
-};
 
 // Casperjs data binding
 casper.on('remote.message', function(msg) {
-//    this.echo('remote message caught: ' + msg);
+    this.echo('remote message caught: ' + msg);
 });
 casper.on( 'page.error', function (msg, trace) {
-//    this.echo( 'Error: ' + msg, 'ERROR' );
+    this.echo( 'Error: ' + msg, 'ERROR' );
 });
+
+
+// This are needed for get the right informations inside
+// when page start
+casper.on('load.started', function() {
+    this.startTime = new Date();
+});
+
+// when resource start
+casper.on('resource.requested', function(req) {
+    this.resources[req.id] = {
+        request: req,
+        startReply: null,
+        endReply: null
+    };
+});
+
+// when resource received
+casper.on('resource.received', function(res) {
+    if (res.stage === 'start') {
+        this.resources[res.id].startReply = res;
+    }
+    if (res.stage === 'end') {
+        this.resources[res.id].endReply = res;
+    }
+});
+
+
 
 //console.log( casper.cli.args );
 
 
-casper.start(request.url).then(function(){
+//casper.start(request.url).then(function(){
+//
+//    this.evaluate(_utils.process_links, {ajaxurls: ajaxurls, request: request});
+//    this.evaluate(_utils.process_scripts, {ajaxurls: ajaxurls, request: request});
+//    this.evaluate(_utils.finish, {ajaxurls: ajaxurls, request: request});
+//
+//});
 
-    this.evaluate(_utils.process_links, {ajaxurls: ajaxurls, request: request});
+casper.start('about:blank', function(){
+    _page.resources = [];
 
-}).then(function(){
+    casper.open(request.url).then(function(){
 
-    this.evaluate(_utils.process_scripts, {ajaxurls: ajaxurls, request: request});
+        _page.title = casper.evaluate(function() {
+            return document.title.replace(/\s+/g, "");
+        });
+        _page.endTime = new Date();
 
-}).then(function(){
+        // This get the
+        var har = helpers.createHAR(casper.getCurrentUrl(), _page.title, casper.startTime, _page.resources),
+            status = this.status().currentHTTPStatus;
 
-    this.evaluate(_utils.finish, {ajaxurls: ajaxurls, request: request});
+//        console.log(ajaxurls.links+request.page);
+
+        casper.capture('assets/screenshot/' + request.page +'.png');
+        .
+
+        this.evaluate(_utils.page_analytics, {ajaxurls: ajaxurls, request: request, har: JSON.stringify(har), status: status});
+
+        this.evaluate(_utils.process_links, {ajaxurls: ajaxurls, request: request});
+        this.evaluate(_utils.process_scripts, {ajaxurls: ajaxurls, request: request});
+        this.evaluate(_utils.finish, {ajaxurls: ajaxurls, request: request});
+    });
+
 });
 
 casper.run(function() {
 //    this.debugPage();
     this.exit();
 });
-
