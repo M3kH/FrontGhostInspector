@@ -34,7 +34,6 @@
     "almond": "~0.2.9",
     "rvc": "~0.1.1",
     "bootstrap": "~3.1.1",
-    "harviewer": "https://github.com/janodvarko/harviewer.git#~2.0.16",
     "codemirror": "~4.2.0",
     "requirejs-codemirror": "*",
     "selectize": "~0.9.1"
