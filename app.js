@@ -17,10 +17,6 @@
  * The same command-line arguments are supported, e.g.:
  * `node app.js --silent --port=80 --prod`
  */
-// Set environment variable to use built-in Node.js API for temp directory
-if (!process.env["TMPDIR"] && !process.env["TMP"] && !process.env["TEMP"]) {
-    process.env["TMPDIR"] = process.env["TMP"] = process.env["TEMP"] = os.tmpdir();
-}
 
 // Ensure a "sails" can be located:
 var sails;

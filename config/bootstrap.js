@@ -8,9 +8,19 @@
  * http://sailsjs.org/#documentation
  */
 
+var exec = require('child_process').exec;
+
 module.exports.bootstrap = function (cb) {
 
-  // It's very important to trigger this callack method when you are finished 
+    sails.on('lifted', function() {
+        // Your post-lift startup code here
+        exec('open http://localhost:1337/',
+            function (error, stdout, stderr) {
+            });
+    });
+
+
+    // It's very important to trigger this callack method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   cb();
 };

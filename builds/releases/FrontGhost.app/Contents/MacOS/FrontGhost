@@ -1,0 +1,7 @@
+#!
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+BASEDIR=$(dirname $0)
+echo $BASEDIR
+echo $DIR
+cd $DIR/../FrontGhostInspector/
+./../bin/node app.js --prod --port=1337
