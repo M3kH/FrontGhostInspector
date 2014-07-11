@@ -8,15 +8,13 @@
  * http://sailsjs.org/#documentation
  */
 
-var exec = require('child_process').exec;
+var open = require('open');
 
 module.exports.bootstrap = function (cb) {
 
     sails.on('lifted', function() {
         // Your post-lift startup code here
-        exec('open http://localhost:1337/',
-            function (error, stdout, stderr) {
-            });
+        open('http://localhost:1337/');
     });
 
 
