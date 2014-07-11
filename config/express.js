@@ -16,6 +16,27 @@ module.exports.express = {
 	// loadMiddleware: function( app, defaultMiddleware, sails ) { ... }
 
 
+    loadMiddleware: function(app, defaultMiddleware, sails) {
+
+
+        var express = require('sails/node_modules/express');
+
+        // Use the middleware in the correct order
+        app.use(defaultMiddleware.startRequestTimer);
+        app.use(defaultMiddleware.cookieParser);
+        app.use(defaultMiddleware.session);
+        // Insert upload file handler
+        app.use('/screenshot', express.static(__dirname + '/../screenshot'));
+        app.use(defaultMiddleware.bodyParser);
+        app.use(defaultMiddleware.handleBodyParserError);
+        app.use(defaultMiddleware.methodOverride);
+        app.use(defaultMiddleware.poweredBy);
+        app.use(defaultMiddleware.router);
+        app.use(defaultMiddleware.www);
+        app.use(defaultMiddleware.favicon);
+        app.use(defaultMiddleware[404]);
+        app.use(defaultMiddleware[500]);
+    }
 
 
 	// Override one or more of the default middleware (besides bodyParser, cookieParser)
@@ -89,6 +110,7 @@ module.exports.express = {
 	//
 	// Example override:
 	// methodOverride: (function customMethodOverride (req, res, next) {})()
+
 };
 
 

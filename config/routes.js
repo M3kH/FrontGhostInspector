@@ -31,6 +31,10 @@ module.exports.routes = {
     action: 'all'
   },
 
+    '/screenshot/*': {
+        'static': '/screenshot/*'
+    },
+
   '/site/:id':{
       controller: 'sites',
       action: 'single'

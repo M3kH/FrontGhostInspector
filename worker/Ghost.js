@@ -105,7 +105,7 @@ casper.start('about:blank', function(){
 
 //        console.log(ajaxurls.links+request.page);
 
-        casper.capture('assets/screenshot/' + request.page +'.png');
+        casper.capture('screenshot/' + request.page +'.png');
 
 
         this.evaluate(_utils.page_analytics, {ajaxurls: ajaxurls, request: request, har: JSON.stringify(har), status: status});
