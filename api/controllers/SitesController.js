@@ -66,6 +66,11 @@ module.exports = {
     });
   },
 
+  // @TODO: this should be where get the filtered resources
+  filterPageFromResource: function(req, res){
+
+  },
+
   scramb: function(req, res) {
 
       var that = this,

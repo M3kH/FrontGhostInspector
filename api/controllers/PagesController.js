@@ -46,6 +46,11 @@ module.exports = {
         });
     },
 
+    // @TODO: This should get all the javascript file of the page
+    getJSDetails: function( req, res ){
+
+    },
+
     getHar: function( req, res ){
         return  Pages.findOne( req.param('id') ).exec(function(err, page){
 //            if( req.param('callback') ) return ;

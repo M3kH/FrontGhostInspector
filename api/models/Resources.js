@@ -24,20 +24,17 @@ module.exports = {
 
       link: "STRING",
 
+      /*
+       * This return a attribute : value;
+       */
       get_attributes: function(){
        if(this.type !== 'js') return false;
        var result = this.content.match(/^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/);
 
        return _.map(result, function(_result, key){
+
            var _attrs;
-//           console.log("-------");
-//           console.log(key);
-//           console.log(_result);
-//           console.log("-------");
            if( key == 2) _attrs = _result.match(/(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/g);
-//           console.log("---ATTRS---");
-//           console.log(_attrs);
-//           console.log("-------");
            if(_attrs) return _attrs.slice(1)[0];
 
            return false;
