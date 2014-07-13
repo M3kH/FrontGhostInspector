@@ -69,8 +69,6 @@ config/local.js
 node_modules
 bower_components
 assets/components
-assets/screenshot
-
 
 
 
