@@ -1,7 +1,46 @@
 #!
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+CONT_DIR="${DIR}/../";
+
 APP_NAME="FrontGhostInspector";
-APP="${DIR}/../${APP_NAME}/";
-NODE="${DIR}/../bin/node";
+APP="${CONT_DIR}${APP_NAME}/";
+
+NODE="${CONT_DIR}bin/node";
+NPM="${CONT_DIR}bin/npm/bin/npm";
+BOWER="${APP}node_modules/bower/bin/bower";
+JQ="${CONT_DIR}bin/jq";
+
+echo $JQ;
+
+VERSION="${CONT_DIR}version.md5";
+NEED_UPDATE=false;
+
+# AUTO~UPDATE
+LAST_HASH = $(curl 'https://api.github.com/repos/M3kH/FrontGhostInspector/commits?per_page=1' | $JQ '.[0].sha');
+echo $LAST_HASH;
+
+
+if [ -f $VERSION ]
+then
+    LOCAL_HASH = `cat $VERSION`;
+
+    if[[ "${LOCAL_HASH}" != "${LAST_HASH}" ]] NEED_UPDATE = true;
+else
+    NEED_UPDATE=true;
+fi
+
+if [[ $NEED_UPDATE ]]
+then
+    cd $CONT_DIR;
+    echo $LAST_HASH > $VERSION;
+    curl -LOk https://github.com/M3kH/FrontGhostInspector/archive/master.tar.gz | tar fzx master.tar.gz;
+    mv ${APP_NAME}-master ${APP_NAME};
+    rm master.tar.gz
+    cd $APP;
+    rm builds;
+    $NPM install;
+    $BOWER install;
+fi
+
 cd $APP
 $NODE app.js --prod --port=1337
