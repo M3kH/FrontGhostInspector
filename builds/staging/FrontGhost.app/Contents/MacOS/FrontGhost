@@ -1,46 +1,73 @@
 #!
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 CONT_DIR="${DIR}/../";
 
 APP_NAME="FrontGhostInspector";
 APP="${CONT_DIR}${APP_NAME}/";
 
-NODE="${CONT_DIR}bin/node";
-NPM="${CONT_DIR}bin/npm/bin/npm";
+NODE="${CONT_DIR}bin/node-frontghost";
+NPM_DIR="${CONT_DIR}bin/npm/bin/";
+#NPM="${NODE} '${NPM_DIR}/npm-cli.js'";
+NPM="${NPM_DIR}npm";
 BOWER="${APP}node_modules/bower/bin/bower";
-JQ="${CONT_DIR}bin/jq";
 
-echo $JQ;
+JQ="${CONT_DIR}bin/jq";
 
 VERSION="${CONT_DIR}version.md5";
 NEED_UPDATE=false;
 
 # AUTO~UPDATE
-LAST_HASH = $(curl 'https://api.github.com/repos/M3kH/FrontGhostInspector/commits?per_page=1' | $JQ '.[0].sha');
-echo $LAST_HASH;
+LAST_HASH=$(curl https://api.github.com/repos/M3kH/FrontGhostInspector/commits?per_page=1 | $JQ '.[0].sha');
+#echo ${LAST_HASH};
 
 
 if [ -f $VERSION ]
 then
-    LOCAL_HASH = `cat $VERSION`;
+    LOCAL_HASH=$(cat $VERSION);
 
-    if[[ "${LOCAL_HASH}" != "${LAST_HASH}" ]] NEED_UPDATE = true;
+    if [[ "${LOCAL_HASH}" != "${LAST_HASH}" ]]
+    then
+        NEED_UPDATE=true
+    fi
+
 else
     NEED_UPDATE=true;
 fi
 
-if [[ $NEED_UPDATE ]]
+if [[ $NEED_UPDATE == true ]]
 then
     cd $CONT_DIR;
     echo $LAST_HASH > $VERSION;
-    curl -LOk https://github.com/M3kH/FrontGhostInspector/archive/master.tar.gz | tar fzx master.tar.gz;
+
+    curl -LOk https://github.com/M3kH/FrontGhostInspector/archive/master.tar.gz;
+    tar zxf master.tar.gz;
+
+    if [ -e $APP ];
+    then
+        mv ${APP}.tmp/localDiskDb.db ${CONT_DIR}localDiskDb.db;
+        rm -r $APP;
+    fi;
+
     mv ${APP_NAME}-master ${APP_NAME};
     rm master.tar.gz
+
     cd $APP;
-    rm builds;
+    rm -r builds;
+
+    mkdir ${APP}.tmp/;
+
+    mv ${CONT_DIR}localDiskDb.db ${APP}.tmp/localDiskDb.db;
+
     $NPM install;
+
     $BOWER install;
+
 fi
 
-cd $APP
-$NODE app.js --prod --port=1337
+cd $APP;
+
+$NODE app.js --prod --port=1337 &&
+
+
+echo "RUN";
