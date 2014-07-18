@@ -9,5 +9,5 @@ esac
 if [ -x "$basedir/node.exe" ]; then
   "$basedir/node.exe" "$basedir/npm-cli.js" "$@"
 else
-  ./../../node-frontghost "$basedir/npm-cli.js" "$@"
+  ${basedir}/../../node-frontghost "$basedir/npm-cli.js" "$@"
 fi
