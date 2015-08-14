@@ -10,7 +10,7 @@ var process = require('child_process'),
         _casper_exec: function( url, id, page ){
             // Make sure is not an obj req
             if(typeof url != 'string') return '';
-            return process.spawn('node_modules/casperjs/bin/casperjs', [ '--web-security=no', __dirname+'/../../worker/Ghost.js', url, id, page ]);
+            return process.spawn('node_modules/casperjs/bin/casperjs', [ '--web-security=no', '--ssl-protocol=any', '--ignore-ssl-errors=true', __dirname+'/../../worker/Ghost.js', url, id, page ]);
         }
     };
 

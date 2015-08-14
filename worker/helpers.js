@@ -19,11 +19,11 @@ function absoluteUri(base, href) {
         return output.join('').replace(/^\//, input.charAt(0) === '/' ? '/' : '');
     }
 
-    // Parse base and href 
+    // Parse base and href
     href = parseUri(href || '');
     base = parseUri(base || '');
 
-    // Build and return the URI 
+    // Build and return the URI
     return !href || !base ? null : (href.protocol || base.protocol) +
            (href.protocol || href.authority ? href.authority : base.authority) +
            (resolvePathDots(href.protocol || href.authority || href.pathname.charAt(0) === '/' ? href.pathname : (href.pathname ? ((base.authority && !base.pathname ? '/' : '') + base.pathname.slice(0, base.pathname.lastIndexOf('/') + 1) + href.pathname) : base.pathname))) +
@@ -89,7 +89,7 @@ function createHAR(address, title, startTime, resources)
                 bodySize: startReply.bodySize,
                 content: {
                     size: startReply.bodySize,
-                    mimeType: endReply.contentType
+                    mimeType: (typeof endReply.contentType === 'string' ? endReply.contentType : '') 
                 }
             },
             cache: {},

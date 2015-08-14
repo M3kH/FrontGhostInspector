@@ -1,4 +1,6 @@
 // Utilities functions
+"use strict";
+
 var _utils = {
 
     process_links: function( ajax_urls, request ){
@@ -46,23 +48,25 @@ var _utils = {
 
     process_scripts: function( ajax_urls, request ){
 
+        var script = document.getElementsByTagName('script'),
+            txt = '';
 
-
-        var script = document.getElementsByTagName('script');
-        var txt = '';
 
         for( var z in script ){
             var msg = {},
-                _script = script[z]
-                src = _script.getAttribute("src");
+                _script = script[z],
+                src = typeof _script.getAttribute === 'function' ? _script.getAttribute('src') : false;
+
+            if(!src){
+              return false;
+            }
 
             msg.type = 'js';
             msg.content = _script.outerHTML;
             msg.page = request.page;
             msg.is_linked = src ? true : false;
             if( msg.is_linked ) msg.link = src;
-
-
+            console.log('msg', msg);
             __utils__.sendAJAX(ajax_urls.resource, 'POST', msg, false);
 
             if( typeof script[z].outerHTML != "undefined"){
@@ -75,10 +79,12 @@ var _utils = {
     },
 
     page_analytics: function( ajax_urls, request, har, status ){
+      console.log((arguments.toString ? arguments.toString() : arguments));
         __utils__.sendAJAX(ajax_urls.links+"update/"+request.page, 'POST', {har: har, status: status }, false);
     },
 
     finish: function( ajax_urls, request ){
+      console.log((arguments.toString ? arguments.toString() : arguments));
         __utils__.sendAJAX(ajax_urls.scambNext, 'POST', { site: request.id }, false);
     }
 

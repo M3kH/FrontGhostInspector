@@ -1,3 +1,4 @@
+"use strict";
 
 // Get the current directory - START
 var currentFile = require('system').args[3].split("/"),
@@ -11,6 +12,29 @@ for( i = 0; i < pathL; i++){
 }
 _dir = _dir.join("/")+"/";
 // Get the current directory - END
+
+var viewports = [
+      {
+        'name': 'smartphone-portrait',
+        'viewport': {width: 320, height: 480}
+      },
+      {
+        'name': 'smartphone-landscape',
+        'viewport': {width: 480, height: 320}
+      },
+      {
+        'name': 'tablet-portrait',
+        'viewport': {width: 768, height: 1024}
+      },
+      {
+        'name': 'tablet-landscape',
+        'viewport': {width: 1024, height: 768}
+      },
+      {
+        'name': 'desktop-standard',
+        'viewport': {width: 1280, height: 1024}
+      }
+    ];
 
 
 // Initialization of the casperjs and create the first configuration
@@ -46,7 +70,7 @@ var casper = require('casper').create({
 casper.on('remote.message', function(msg) {
     this.echo('remote message caught: ' + msg);
 });
-casper.on( 'page.error', function (msg, trace) {
+casper.on('page.error', function (msg) {
     this.echo( 'Error: ' + msg, 'ERROR' );
 });
 
@@ -100,19 +124,40 @@ casper.start('about:blank', function(){
         _page.endTime = new Date();
 
         // This get the
-        var har = helpers.createHAR(casper.getCurrentUrl(), _page.title, casper.startTime, _page.resources),
-            status = this.status().currentHTTPStatus;
+        var self = this,
+            har = helpers.createHAR(casper.getCurrentUrl(), _page.title, casper.startTime, _page.resources),
+            status = self.status().currentHTTPStatus;
 
-//        console.log(ajaxurls.links+request.page);
+        self.wait(1000);
+        self.then(function(){
+          casper.capture('screenshot/' + request.page +'.png');
 
-        casper.capture('screenshot/' + request.page +'.png');
+          self.evaluate(_utils.page_analytics, {ajaxurls: ajaxurls, request: request, har: JSON.stringify(har), status: status});
+          self.evaluate(_utils.process_links, {ajaxurls: ajaxurls, request: request});
+          self.evaluate(_utils.process_scripts, {ajaxurls: ajaxurls, request: request});
+          self.evaluate(_utils.finish, {ajaxurls: ajaxurls, request: request});
+        });
 
+        self.then(function(){
+          casper.each(viewports, function(casper, viewport) {
+            this.then(function() {
+              this.viewport(viewport.viewport.width, viewport.viewport.height);
+            });
+            this.thenOpen(request.url, function() {
+              this.wait(5000);
+            });
+            this.then(function(){
+              this.echo('Screenshot for ' + viewport.name + ' (' + viewport.viewport.width + 'x' + viewport.viewport.height + ')', 'info');
+              this.capture('screenshot/' + request.page + '-' + viewport.name + '-' + viewport.viewport.width + 'x' + viewport.viewport.height + '.png', {
+                  top: 0,
+                  left: 0,
+                  width: viewport.viewport.width,
+                  height: viewport.viewport.height
+              });
+            });
+          });
+        });
 
-        this.evaluate(_utils.page_analytics, {ajaxurls: ajaxurls, request: request, har: JSON.stringify(har), status: status});
-
-        this.evaluate(_utils.process_links, {ajaxurls: ajaxurls, request: request});
-        this.evaluate(_utils.process_scripts, {ajaxurls: ajaxurls, request: request});
-        this.evaluate(_utils.finish, {ajaxurls: ajaxurls, request: request});
     });
 
 });

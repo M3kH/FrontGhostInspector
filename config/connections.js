@@ -30,33 +30,6 @@ module.exports.connections = {
     adapter: 'sails-disk'
   },
 
-  // MySQL is the world's most popular relational database.
-  // http://en.wikipedia.org/wiki/MySQL
-  //
-  // Run:
-  // npm install sails-mysql
-  //
-  mysqlGhostDB: {
-    adapter : 'sails-mysql',
-    host: 'localhost',
-    user: 'root',
-    password: 'z3nz3r0',
-    database: 'ghost-db'
-  },
-
-  // MongoDB is the leading NoSQL database.
-  // http://en.wikipedia.org/wiki/MongoDB
-  //
-  // Run:
-  // npm install sails-mongo
-  //
-  mongoGhostDB: {
-    adapter   : 'sails-mongo',
-    host      : 'localhost',
-    port      : 27017,
-    database  : 'ghost-db'
-  },
-
   // PostgreSQL is another officially supported relational database.
   // http://en.wikipedia.org/wiki/PostgreSQL
   //
@@ -76,7 +49,3 @@ module.exports.connections = {
   // https://github.com/balderdashy/sails
 
 };
-
-
-
-

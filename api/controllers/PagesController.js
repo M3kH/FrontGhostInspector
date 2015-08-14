@@ -1,5 +1,5 @@
 /**
- * PagesController.js 
+ * PagesController.js
  *
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
@@ -19,6 +19,7 @@ module.exports = {
 
         Sites.find(_site).exec(function(err, site){
 
+            if( !_path ) return res.json(409, {error: 'Not valid path'});
             if( _path.indexOf("#") == 0 ) return res.json(409, {error: 'This is a local url'});
             if( _path.indexOf("mailto:") == 0 ) return res.json(409, {error: 'This is a mail'});
             if( _path.indexOf("http://") > -1 && _path.indexOf(site.url) == -1 ) return res.json(409, {error: 'No remote link are accepted'});
@@ -52,9 +53,13 @@ module.exports = {
     },
 
     getHar: function( req, res ){
-        return  Pages.findOne( req.param('id') ).exec(function(err, page){
-//            if( req.param('callback') ) return ;
-            return res.jsonp(200, page.har) ;
+        var id = req.param('id');
+
+        if(id.indexOf('&') > -1 ) id = id.split('&')[0];
+
+        return Pages.findOne( id ).exec(function(err, page){
+            if(!page) return res.jsonp(500, { error: 'Item not found' });
+            return res.jsonp(200, JSON.parse(page.har)) ;
         });
     }
 

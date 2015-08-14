@@ -19,7 +19,22 @@
                 <div class="cntrls">
                     <div>
                         <a href="#" data-toggle="modal" data-target="#page-scripts-<%= page.id %>" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></a>
-                        <a href="/screenshot/<%= page.id %>.png" target="_blank" class="btn btn-default"><i class="glyphicon glyphicon-camera"></i></a>
+                        <div class="btn-group dropdown">
+                          <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-camera"></i></button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <!-- Dropdown menu links -->
+                            <li><a href="/screenshot/<%= page.id %>.png">Desktop</a></li>
+                            <li><a href="/screenshot/<%= page.id %>-desktop-standard-1280x1024.png">Desktop 1270 X 1024</a></li>
+                            <li><a href="/screenshot/<%= page.id %>-smartphone-landscape-480x320.png">Smarthphone 480 X 320</a></li>
+                            <li><a href="/screenshot/<%= page.id %>-smartphone-portrait-320x480.png">Smarthphone 320 X 480</a></li>
+                            <li><a href="/screenshot/<%= page.id %>-tablet-landscape-1024x768.png">Tablet 1024 X 768</a></li>
+                            <li><a href="/screenshot/<%= page.id %>-tablet-portrait-768x1024.png">Tablet 768 X 1024</a></li>
+                          </ul>
+                        </div>
                         <a href="http://www.softwareishard.com/har/viewer/?inputUrl=http://localhost:1337/get_har/<%= page.id %>&expand=true" target="_blank" class="btn btn-default"><i class="glyphicon glyphicon-dashboard"></i></a>
                         <a href="<%= page.full_url() %>" target="_blank" class="btn btn-default"><i class="glyphicon glyphicon-link"></i></a>
                     </div>
